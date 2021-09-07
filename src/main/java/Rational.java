@@ -10,10 +10,19 @@ class Rational {
 
     Rational() {
         // to be completed
+        this.numerator = 1;
+        this.denominator = 1;
+        simplestForm();
     }
 
     Rational(long numerator, long denominator) throws Illegal { 
         // to be completed
+        this.numerator = numerator;
+        this.denominator = denominator;
+        if (denominator == 0){
+            throw new Illegal("Denominator is zero");
+        }
+        simplestForm();
     } 
 
     // find the reduce form 
@@ -46,6 +55,9 @@ class Rational {
      */
     public void subtract(Rational x) {
         // to be completed
+        numerator = (numerator * x.denominator) - (x.numerator * denominator);
+        denominator = denominator * x.denominator;
+        simplestForm();
     }
 
     /***
@@ -54,6 +66,9 @@ class Rational {
      */
     public void multiply(Rational x) { 
         // to be completed
+        numerator = numerator * x.numerator;
+        denominator = denominator * x.denominator;
+        simplestForm();
     }
 
     /***
@@ -62,6 +77,9 @@ class Rational {
      */
     public void divide(Rational x) {
         // to be completed
+        numerator = numerator * x.denominator;
+        denominator = denominator * x.numerator;
+        simplestForm();
     }
 
     /***
@@ -71,7 +89,16 @@ class Rational {
      */
     public boolean equals(Object x) {
         // to be completed
-        return true; // TODO: This needs to be modified.
+        try{
+            Rational r = (Rational) x;
+            r.simplestForm();
+            if (this.numerator == r.numerator && this.denominator == r.denominator) {
+                return true;
+            }
+            return false;
+        }catch (ClassCastException e){
+            return false;
+        }
     }
 
     /***
@@ -80,9 +107,21 @@ class Rational {
      * @return -1 if the current rational number is less than the given number, 0 if they're equal, 1 if the current
      * rational number is larger than the given number
      */
-    public long compareTo(Object x) {
+    public long compareTo(Object x) throws Illegal {
         // to be completed
-        return -1; // TODO: this needs to be modified.
+        try {
+            Rational r = (Rational) x;
+            r.simplestForm();
+            if (equals(r)) {
+                return 0;
+            } else if ((numerator * r.denominator) < (r.numerator * denominator)) {
+                return -1;
+            } else {
+                return 1;
+            }
+        }catch (ClassCastException e){
+            throw new Illegal("The class cannot be cast to Rational");
+        }
     }
 
     /***
@@ -91,7 +130,8 @@ class Rational {
      */
     public String toString() { 
         // to be completed
-        return ""; // TODO: This needs to be modified.
+        simplestForm();
+        return numerator + "/" + denominator;
     }
 
     public static void main(String[] args) {
